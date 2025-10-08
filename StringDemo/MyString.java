@@ -16,13 +16,22 @@ public class MyString {
     }
 
     int countWords() {
-        if (s.trim().isEmpty()) return 0;
-        return s.trim().split("\\s+").length;
+        if(s.length()==0)return 0;
+        boolean word = false;
+        int count=0;
+        for(int i=0;i<s.length();i++){
+            word=(s.charAt(i)!=' ');
+            if(word && (i==0 || s.charAt(i-1)==' '))count++;
+        }
+        return count;
     }
 
     String replace(char a, char b) {
-        s = s.replace(a, b);
-        return s;
+		char[] x = s.toCharArray();
+        for (int i = 0; i < x.length; i++) {
+			if (x[i] == a) x[i] = b;
+        }
+        return new String(x);
     }
 
     boolean isPalindrome() {
@@ -43,23 +52,36 @@ public class MyString {
     }
 
     String[] split() {
-        return s.trim().split("\\s+");
+        int words = countWords();
+		String[] arr = new String[words];
+        int i = 0, idx = 0;
+        while (i < s.length()) {
+            while (i < s.length() && s.charAt(i) == ' ') i++;
+            if (i >= s.length()) break;
+            int j = i;
+            while (j < s.length() && s.charAt(j) != ' ') j++;
+            char[] temp = new char[j - i];
+            for (int k = i, t = 0; k < j; k++, t++) temp[t] = s.charAt(k);
+            arr[idx++] = new String(temp);
+            i = j;
+        }
+        return arr;
     }
 
     char maxRepeat() {
         if (s.isEmpty()) return '\0';
         int[] freq = new int[256];
         int max = 0;
-        char res = s.charAt(0);
+        char result = s.charAt(0);
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             freq[c]++;
             if (freq[c] > max) {
                 max = freq[c];
-                res = c;
+                result = c;
             }
         }
-        return res;
+        return result;
     }
 
     String sort() {
