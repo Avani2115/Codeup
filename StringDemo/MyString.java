@@ -4,75 +4,80 @@
  * @Author - Avani Shrimali
  */
 public class MyString {
-    private String s;
+    private String s = "Avani"; // always initialize with something
 
-    MyString(String value) {
+    public MyString(String value) {
         this.s = value;
     }
 
-    String append(String t) {
+    public String append(String t) {
         s += t;
         return s;
     }
 
-    int countWords() {
-        if(s.length()==0)return 0;
+    public int countWords() {
+        if (s.length() == 0) return 0;
         boolean word = false;
-        int count=0;
-        for(int i=0;i<s.length();i++){
-            word=(s.charAt(i)!=' ');
-            if(word && (i==0 || s.charAt(i-1)==' '))count++;
+        int count = 0;
+        for (int i = 0; i < s.length(); i++) {
+            word = (s.charAt(i) != ' ');
+            if (word && (i == 0 || s.charAt(i - 1) == ' ')) count++;
         }
         return count;
     }
 
-    String replace(char a, char b) {
-		char[] x = s.toCharArray();
-        for (int i = 0; i < x.length; i++) {
-			if (x[i] == a) x[i] = b;
+    public String replace(char oldChar, char newChar) {
+        char[] chars = MyUtils.toCharArray(s);
+        for (int i = 0; i < chars.length; i++) {
+            if (chars[i] == oldChar) chars[i] = newChar;
         }
-        return new String(x);
+        return new String(chars);
     }
 
-    boolean isPalindrome() {
-        int i = 0, j = s.length() - 1;
-        while (i < j) {
-            if (s.charAt(i) != s.charAt(j)) return false;
-            i++;
-            j--;
+    public boolean isPalindrome() {
+        int left = 0, right = s.length() - 1;
+        while (left < right) {
+            if (s.charAt(left) != s.charAt(right)) return false;
+            left++;
+            right--;
         }
         return true;
     }
 
-    String splice(int start, int length) {
+    public String splice(int start, int length) {
         if (start < 0 || start >= s.length() || length <= 0) return s;
-        int end = Math.min(start + length, s.length());
+        int end = MyUtils.min(start + length, s.length());
         s = s.substring(0, start) + s.substring(end);
         return s;
     }
 
-    String[] split() {
+    public String[] split() {
         int words = countWords();
-		String[] arr = new String[words];
-        int i = 0, idx = 0;
-        while (i < s.length()) {
-            while (i < s.length() && s.charAt(i) == ' ') i++;
-            if (i >= s.length()) break;
-            int j = i;
-            while (j < s.length() && s.charAt(j) != ' ') j++;
-            char[] temp = new char[j - i];
-            for (int k = i, t = 0; k < j; k++, t++) temp[t] = s.charAt(k);
+        String[] arr = new String[words];
+        int left = 0, idx = 0;
+
+        while (left < s.length()) {
+            while (left < s.length() && s.charAt(left) == ' ') left++;
+            if (left >= s.length()) break;
+
+            int right = left;
+            while (right < s.length() && s.charAt(right) != ' ') right++;
+
+            char[] temp = new char[right - left];
+            for (int k = left, t = 0; k < right; k++, t++) temp[t] = s.charAt(k);
+
             arr[idx++] = new String(temp);
-            i = j;
+            left = right;
         }
         return arr;
     }
 
-    char maxRepeat() {
-        if (s.isEmpty()) return '\0';
+    public char getmaxRepeat() {
+        if (s.length() == 0) return '\0';
         int[] freq = new int[256];
         int max = 0;
         char result = s.charAt(0);
+
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             freq[c]++;
@@ -84,39 +89,39 @@ public class MyString {
         return result;
     }
 
-    String sort() {
-        char[] a = s.toCharArray();
-        for (int i = 0; i < a.length - 1; i++) {
-            for (int j = i + 1; j < a.length; j++) {
-                if (a[i] > a[j]) {
-                    char t = a[i];
-                    a[i] = a[j];
-                    a[j] = t;
+    public String sort() {
+        char[] arr = MyUtils.toCharArray(s);
+        for (int left = 0; left < arr.length - 1; left++) {
+            for (int right = left + 1; right < arr.length; right++) {
+                if (arr[left] > arr[right]) {
+                    char temp = arr[left];
+                    arr[left] = arr[right];
+                    arr[right] = temp;
                 }
             }
         }
-        s = new String(a);
+        s = new String(arr);
         return s;
     }
 
-    String shift(int n) {
-        if (s.isEmpty()) return s;
+    public String shift(int n) {
+        if (s.length() == 0) return s;
         n = ((n % s.length()) + s.length()) % s.length(); // handle negative shift
         s = s.substring(n) + s.substring(0, n);
         return s;
     }
 
-    String reverse() {
-        char[] x = s.toCharArray();
-        int i = 0, j = x.length - 1;
-        while (i < j) {
-            char temp = x[i];
-            x[i] = x[j];
-            x[j] = temp;
-            i++;
-            j--;
+    public String reverse() {
+        char[] arr = MyUtils.toCharArray(s);
+        int left = 0, right = arr.length - 1;
+        while (left < right) {
+            char temp = arr[left];
+            arr[left] = arr[right];
+            arr[right] = temp;
+            left++;
+            right--;
         }
-        s = new String(x);
+        s = new String(arr);
         return s;
     }
 
